@@ -24,6 +24,10 @@ var Animal = new Class({
 
 	say: function(){
 		return 'animal:say:' + this.name;
+	},
+	
+	toString: function(){
+		return this.name;
 	}
 
 });
@@ -206,8 +210,8 @@ describe('Class creation', {
 
 		value_of(spot.say()).should_be('NEW:animal:say:spot');
 		value_of(rover.say()).should_be('NEW:animal:say:rover');
-	}
-
+	},
+	
 	//We might attempt to add support for the following at a later date
 
 	/*
@@ -234,6 +238,11 @@ describe('Class creation', {
 		value_of(rover.say()).should_be('NEW:animal:say:rover');
 	}
 	*/
+	
+	"should overwrite the toString method": function(){
+		var animal = new Animal('dolphin');
+		value_of(animal + '').should_be('dolphin');
+	}
 
 });
 
