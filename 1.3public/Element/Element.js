@@ -508,6 +508,74 @@ describe('Element.erase', {
 
 });
 
+
+describe('Element.get/set/erase exaustive',  (function(){
+	var tagsAttrs = {
+		label: ['for'],
+		input: ['data-something', 'id', 'name', 'value', 'maxLength', 'readOnly', 'defaultValue', 'accessKey', 'checked', 'disabled', 'multiple', 'selected', 'noresize', 'onkeypress', 'onkeydown', 'onkeyup'],
+		button: ['type'], // theres a bug on safari while using type as an expando (el.type) with button elements
+		a: ['href', 'title', 'text', 'class', 'html', 'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout'],
+		img: ['src', 'ismap', 'useMap', 'tabIndex'],
+		table: ['cellPadding', 'cellSpacing'],
+		td: ['colSpan', 'rowSpan'],
+		iframe: ['frameBorder'],
+		script: ['defer'],
+		object: ['declare'],
+		style: ['lang', 'dir']
+	};
+	
+	var valueTypes = {
+		bools: {'compact': 1, 'nowrap': 1, 'ismap': 1, 'declare': 1, 'noshade': 1, 'checked': 1, 'disabled': 1, 'readonly': 1, 'multiple': 1, 'selected': 1, 'noresize': 1, 'defer': 1, 'readonly': 1},
+		functions: {'onclick': 1, 'ondblclick': 1, 'onmousedown': 1, 'onmouseup': 1, 'onmouseover': 1, 'onmousemove': 1, 'onmouseout': 1, 'onkeypress': 1, 'onkeydown': 1, 'onkeyup': 1},
+		numerics: {'cellpadding': 1, 'cellspacing': 1, 'colspan': 1, 'frameborder': 1, 'maxlength': 1, 'rowspan': 1, 'tabindex': 1},
+		strings: {'src' : 1, 'name': 1, 'href': 1, 'id': 1, 'title': 1, 'for': 1, 'value': 1, 'type': 1, 'html': 1, 'class': 1, 'text': 1, 'lang': 1, 'dir': 1, 'defaultvalue': 1, 'accesskey': 1, 'usemap': 1, 'data-something': 1}
+	};
+	
+	var $empty = function(){};
+	
+	var setValues = {
+		bools: {'setTo': true},
+		functions: {'setTo': $empty},
+		numerics: {'setTo': 20},
+		strings: {'setTo': 'ltr'}
+	};
+	
+	var specs = {};
+	
+	var createSpec = function(element, attr){
+		specs['should set/get/erase property "' + attr + '" on a "' + element.tagName + '" element'] = (function(){
+			var loweredAttr = attr.toLowerCase();
+			for(attrValueType in valueTypes){
+				if(valueTypes[attrValueType][loweredAttr]){
+					return (function(){
+						var type = attrValueType;
+						return function(){
+							value_of($chk(Element.get(element, attr)) ? Element.get(element, attr) : null).should_be_null();
+							Element.set(element, attr, setValues[type].setTo);
+							value_of(Element.get(element, attr)).should_be(setValues[type].setTo);
+							Element.erase(element, attr);
+							value_of($chk(Element.get(element, attr)) ? Element.get(element, attr) : null).should_be_null();
+						};
+					})();
+				}
+			}
+		})();
+	};
+	
+	for (tag in tagsAttrs){
+		var element = $(document.createElement(tag));
+		for(var i = 0; i < tagsAttrs[tag].length; i++){
+			var loweredTag = tagsAttrs[tag][i].toLowerCase();
+			createSpec(element, tagsAttrs[tag][i]);
+			if(loweredTag !== tagsAttrs[tag][i]) createSpec(element, loweredTag);
+		}
+	}
+	
+	return specs;
+})()
+
+);
+
 describe('Element.match', {
 
 	'should return true if tag is not provided': function(){
