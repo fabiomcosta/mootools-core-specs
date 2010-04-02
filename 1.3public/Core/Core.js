@@ -358,8 +358,9 @@ describe('Object.each', {
 
 	'should call the function for each item in Function arguments': function(){
 		var daysArr = [];
+		
 		(function(){
-			Object.each(Array.from(arguments), function(value, key){
+			Array.each(arguments, function(value, key){
 				daysArr[key] = value;
 			});
 		})('Sun','Mon','Tue');
