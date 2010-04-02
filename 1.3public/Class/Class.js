@@ -24,6 +24,10 @@ var Animal = new Class({
 
 	say: function(){
 		return 'animal:say:' + this.name;
+	},
+	
+	toString: function(){
+		return 'Animal';
 	}
 
 });
@@ -44,6 +48,10 @@ var Cat = new Class({
 
 	play: function(){
 		return 'cat:play:' + this.name;
+	},
+	
+	toString: function(){
+		return 'Cat';
 	}
 
 });
@@ -206,8 +214,16 @@ describe('Class creation', {
 
 		value_of(spot.say()).should_be('NEW:animal:say:spot');
 		value_of(rover.say()).should_be('NEW:animal:say:rover');
-	}
+	},
 
+	"should implement the toString method": function(){
+		var animal = new Animal();
+		var cat = new Cat();
+
+		value_of(animal + '').should_be('Animal');
+		value_of(cat + '').should_be('Cat');
+	}
+	
 	//We might attempt to add support for the following at a later date
 
 	/*
