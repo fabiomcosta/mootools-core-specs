@@ -207,8 +207,8 @@ var myElements = new Elements([
 
 describe('Elements', {
 
-	'should return an array type': function(){
-		value_of(Type.isArray(myElements)).should_be_true();
+	'should return an elements type': function(){
+		value_of(Type.isElements(myElements)).should_be_true();
 	},
 
 	'should return an array of Elements': function(){
