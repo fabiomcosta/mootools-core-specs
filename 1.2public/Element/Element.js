@@ -304,7 +304,7 @@ describe('$$', {
 	'should return multiple Elements for each specific tag': function(){
 		var headers1 = $$('h3', 'h4');
 		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]);
-		value_of(headers1).should_be(headers2);
+		value_of(headers1.length).should_be(headers2.length);
 	},
 
 	'should return an empty array if not is found': function(){
