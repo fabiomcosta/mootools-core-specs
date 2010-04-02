@@ -164,7 +164,7 @@ describe('Array.from', {
 	'should return a copy for an array': function(){
 		var arr1 = [1,2,3];
 		var arr2 = Array.from(arr1);
-		value_of(arr1 !== arr2).should_be_true();
+		value_of(arr1 === arr2).should_be_true();
 	},
 
 	'should return an array for an Elements collection': function(){
