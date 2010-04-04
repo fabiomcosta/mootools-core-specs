@@ -1185,9 +1185,15 @@ describe('Element.toQueryString', {
 			'<input type="file" name="file" />' +
 			'<textarea name="textarea">textarea-value</textarea>' +
 			'<input type="submit" name="go" value="Go" />' +
-			'<input type="reset" name="cancel" value="Reset" />'
+			'<input type="reset" name="cancel" value="Reset" />' +
+			'<input type="image" name="image" value="Image" />'
 		});
-		value_of(form.toQueryString()).should_be('input=checked&textarea=textarea-value');
+		queryString = form.toQueryString();
+		value_of(queryString).should_match(/(^|&)input=checked(&|$)/);
+		value_of(queryString).should_match(/(^|&)textarea=textarea-value(&|$)/);
+		value_of(queryString).should_not_match(/(^|&)go=Go(&|$)/);
+		value_of(queryString).should_not_match(/(^|&)cancel=Reset(&|$)/);
+		value_of(queryString).should_not_match(/(^|&)image=Image(&|$)/);
 	}
 
 });
