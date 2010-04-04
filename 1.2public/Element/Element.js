@@ -439,6 +439,12 @@ describe('Element.getElementById', {
 	'should getElementById that matches the id, otherwise null': function(){
 		value_of(Container.getElementById('first')).should_be(Container.childNodes[0]);
 		value_of(Container.getElementById('not_found')).should_be_null();
+	},
+	
+	'should getElementById on a node thats not into the DOM': function(){
+		document.body.removeChild(Container);
+		value_of(Container.getElementById('first')).should_be(Container.childNodes[0]);
+		value_of(Container.getElementById('not_found')).should_be_null();
 	}
 
 });
