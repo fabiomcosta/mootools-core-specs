@@ -1266,6 +1266,11 @@ describe('Element.getProperty', {
 	'should getProperty action from a form that has an input with name action': function(){
 		var form = new Element('div', {'html': '<form action="/url/"><input id="action" name="action"/></form>'}).getFirst();
 		value_of(form.getProperty('action')).should_be('/url/');
+	},
+	
+	'should getProperty even if the property has the same name as a Element.ProtoType method': function(){
+		var el = new Element('div', {'html': '<div empty="sss"></div>'}).getFirst();
+		value_of(el.getProperty('empty')).should_be('sss');
 	}
 
 });
