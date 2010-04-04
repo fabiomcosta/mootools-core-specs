@@ -1145,7 +1145,13 @@ describe('Element.toQueryString', {
 			'</select>' +
 			'<textarea name="textarea">textarea-value</textarea>'
 		});
-		value_of(form.toQueryString()).should_be('input=checked&select[]=saab&select[]=opel&textarea=textarea-value');
+		var queryString = form.toQueryString();
+		value_of(queryString).should_match(/(^|&)input=checked(&|$)/);
+		value_of(queryString).should_match(/(^|&)select\[\]=saab(&|$)/);
+		value_of(queryString).should_match(/(^|&)select\[\]=opel(&|$)/);
+		value_of(queryString).should_not_match(/(^|&)select\[\]=volvo(&|$)/);
+		value_of(queryString).should_not_match(/(^|&)select\[\]=bmw(&|$)/);
+		value_of(queryString).should_match(/(^|&)textarea=textarea-value(&|$)/);
 	},
 
 	"should return a query string containing even empty values, single select must have a selected option": function() {
