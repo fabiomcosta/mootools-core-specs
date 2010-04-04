@@ -1245,6 +1245,11 @@ describe('Element.getProperty', {
 		var readonly3 = new Element('input', { type: 'text' });
 		readonly3.readOnly = false;
 		value_of(readonly3.getProperty('readonly')).should_be_false();
+	},
+	
+	'should getProperty action from a form that has an input with name action': function(){
+		var form = new Element('div', {'html': '<form action="/url/"><input id="action" name="action"/></form>'}).getFirst();
+		value_of(form.getProperty('action')).should_be('/url/');
 	}
 
 });
