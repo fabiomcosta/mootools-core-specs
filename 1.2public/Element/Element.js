@@ -289,6 +289,16 @@ describe('$', {
 	'should return null if string not found or type mismatch': function(){
 		value_of($(1)).should_be_null();
 		value_of($('nonexistant')).should_be_null();
+	},
+	
+	'should return null if string not found or type mismatch': function(){
+		var form = new Element('div', {
+			'html':
+				'<form> \
+					<input id="send" name="send" type="submit" /> \
+				</form>'})
+			.firstChild;
+		value_of(typeOf($(form)) == 'element').should_be_true();
 	}
 
 });
