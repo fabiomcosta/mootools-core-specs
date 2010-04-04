@@ -1589,3 +1589,17 @@ describe('Element.hasChild', {
 	}
 
 });
+
+describe('Element.getSelected', {
+
+	"should return the first element when theres no element explicitly selected": function(){
+		var select = new Element('div', {
+			'html':
+			'<select id="my_select">\
+				<option value="a">Option A</option>\
+			</select>'
+		}).getFirst();
+		value_of(select.getSelected()).should_be(select.getChildren());
+	}
+
+});
