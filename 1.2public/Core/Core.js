@@ -145,6 +145,14 @@ describe('$each', {
 			i++;
 		});
 		value_of(i).should_be(0);
+	},
+	
+	'should iterate each char on a string': function(){
+		var daysObj = [];
+		$each('Sun', function(value, key){
+			daysObj[key] = value;
+		});
+		value_of(daysObj).should_be(['S','u','n']);
 	}
 
 });
