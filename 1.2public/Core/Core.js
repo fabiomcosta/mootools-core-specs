@@ -137,6 +137,14 @@ describe('$each', {
 		});
 
 		value_of(daysObj).should_be({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
+	},
+	
+	'should not iterate if the passed iterable is falsy': function(){
+		var i = 0;
+		$each(undefined, function(){
+			i++;
+		});
+		value_of(i).should_be(0);
 	}
 
 });
