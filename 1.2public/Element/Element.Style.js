@@ -35,6 +35,11 @@ describe('Element.getStyle', {
 	'should `getStyle` with a dash in it': function() {
 		var el = new Element('div').set('html', '<div style="list-style-type:square"></div>');
 		value_of(el.getElement('div').getStyle('list-style-type')).should_be('square');
+	},
+	
+	'should get the float style with getStyle': function() {
+		var el = new Element('div').set('class', 'float-right');
+		value_of(el.getStyle('float')).should_be('right');
 	}
 
 });
