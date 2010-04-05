@@ -40,6 +40,11 @@ describe('Element.getStyle', {
 	'should get the float style with getStyle': function() {
 		var el = new Element('div').set('class', 'float-right');
 		value_of(el.getStyle('float')).should_be('right');
+	},
+	
+	'should get the z-index style with getStyle': function() {
+		var el = new Element('div').set('class', 'z-index-5');
+		value_of(el.getStyle('z-index')).should_be('5');
 	}
 
 });
