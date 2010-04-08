@@ -540,6 +540,10 @@ describe('Element.get/set/erase exaustive',  (function(){
 		strings: {'setTo': 'ltr'}
 	};
 	
+	var defaultValues = {
+		type: 'submit'
+	};
+	
 	var specs = {};
 	
 	var createSpec = function(element, attr){
@@ -550,11 +554,11 @@ describe('Element.get/set/erase exaustive',  (function(){
 					return (function(){
 						var type = attrValueType;
 						return function(){
-							value_of($chk(Element.get(element, attr)) ? Element.get(element, attr) : null).should_be_null();
+							value_of($chk(Element.get(element, attr)) ? Element.get(element, attr) : null).should_be(defaultValues[loweredAttr] || null);
 							Element.set(element, attr, setValues[type].setTo);
 							value_of(Element.get(element, attr)).should_be(setValues[type].setTo);
 							Element.erase(element, attr);
-							value_of($chk(Element.get(element, attr)) ? Element.get(element, attr) : null).should_be_null();
+							value_of($chk(Element.get(element, attr)) ? Element.get(element, attr) : null).should_be(defaultValues[loweredAttr] || null);
 						};
 					})();
 				}
