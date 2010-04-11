@@ -6,11 +6,15 @@ License:
 	MIT-style license.
 */
 
+(function(){
+
+var $defined = function(obj){ return obj != null; };
+	
 describe('Element constructor', {
 
 	"should return an Element with the correct tag": function(){
 		var element = new Element('div');
-		value_of($type(element)).should_be('element');
+		value_of(typeOf(element)).should_be('element');
 		value_of($defined(element.addEvent)).should_be_true();
 		value_of(element.tagName.toLowerCase()).should_be('div');
 	},
@@ -1635,3 +1639,5 @@ describe('Element.hasChild', {
 	}
 
 });
+
+})();

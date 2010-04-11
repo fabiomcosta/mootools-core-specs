@@ -9,6 +9,7 @@ License:
 (function(){
 
 var hash2 = new Hash({ a: 'string', b: 233, c: {} });
+var $defined = function(obj){ return obj != null; };
 
 describe("Hash Methods", {
 

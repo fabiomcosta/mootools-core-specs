@@ -8,8 +8,10 @@ License:
 
 (function(){
 
+var $empty = function(){};
+
 var fn = function(){
-	return $A(arguments);
+	return Array.from(arguments);
 };
 
 var Rules = function(){
@@ -17,7 +19,7 @@ var Rules = function(){
 };
 
 var Args = function(){
-	return [this].concat($A(arguments));
+	return [this].concat(Array.from(arguments));
 };
 
 describe("Function Methods", {
@@ -123,7 +125,7 @@ describe("Function Methods", {
 	},
 
 	"should return the function's return value": function(){
-		var fnc = $lambda('hello world!');
+		var fnc = Function.from('hello world!');
 		value_of(fnc.attempt()).should_be('hello world!');
 	},
 
@@ -139,7 +141,7 @@ describe("Function Methods", {
 	'delay should return a timer pointer': function(){
 		var timer = $empty.delay(10000);
 		value_of(Type.isNumber(timer)).should_be_true();
-		$clear(timer);
+		Function.clear(timer);
 	},
 
 	// Function.periodical
@@ -147,7 +149,7 @@ describe("Function Methods", {
 	'periodical should return a timer pointer': function(){
 		var timer = $empty.periodical(10000);
 		value_of(Type.isNumber(timer)).should_be_true();
-		$clear(timer);
+		Function.clear(timer);
 	}
 
 });

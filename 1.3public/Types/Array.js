@@ -15,6 +15,8 @@ var getTestArray = function(){
 	return a;
 };
 
+var $defined = function(obj){ return obj != null; };
+
 
 describe("Array Methods", {
 
@@ -179,7 +181,7 @@ describe("Array Methods", {
 	'should extend an array': function(){
 		var a = [1,2,4];
 		var b = [2,3,4,5];
-		a.extend(b);
+		a.append(b);
 		value_of(a).should_be([1,2,4,2,3,4,5]);
 		value_of(b).should_be([2,3,4,5]);
 	},
