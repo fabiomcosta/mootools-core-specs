@@ -8,9 +8,39 @@ License:
 
 describe('Element.Dimensions', function(){
 
-	var div, relDiv, absDiv, scrollDiv, tallDiv;
+	var div, relDiv, absDiv, scrollDiv, tallDiv, fixedDiv, fixedDivChild, staticDiv, staticDivChild, table, orphanDiv;
 
 	beforeEach(function(){
+		
+		/*
+			// overview of element structure, please update if anything has changed
+			// theres also an orphanDiv
+			<document>
+
+				<div absolute>
+					<relDiv relative>
+						<absDiv absolute>
+						</absDiv>
+					</relDiv>
+				</div>
+				
+				<scrollDiv absolute>
+					<tallDiv></tallDiv>
+				</scrollDiv>
+				
+				<fixedDiv fixed>
+					<fixedDivChild></fixedDivChild>
+				</fixedDiv>
+				
+				<table></table>
+				
+				<staticDiv>
+					<staticDivChild absolute></staticDivChild>
+				</staticDiv>
+				
+			</document>
+		*/
+		
 		div = new Element('div', {
 			id: 'ElementDimensionsTest',
 			styles: {
@@ -78,6 +108,70 @@ describe('Element.Dimensions', function(){
 				visibility: 'hidden'
 			}
 		}).inject(scrollDiv);
+		
+		fixedDiv = new Element('div', {
+			styles: {
+				width: 200,
+				height: 200,
+				position: 'fixed',
+				top: 300,
+				left: 300,
+				visibility: 'hidden'
+			}
+		}).inject($(document.body));
+		
+		fixedDivChild = new Element('div', {
+			styles: {
+				width: 50,
+				height: 50,
+				visibility: 'hidden'
+			}
+		}).inject(fixedDiv);
+		
+		staticDiv = new Element('div', {
+			styles: {
+				width: 50,
+				height: 50,
+				visibility: 'hidden'
+			}
+		}).inject($(document.body));
+		
+		staticDivChild = new Element('div', {
+			styles: {
+				width: 50,
+				height: 50,
+				visibility: 'hidden'
+			}
+		}).inject(staticDiv);
+
+		table = new Element('table').inject($(document.body));
+		
+		table.set('html','\
+			<tbody>\
+				<tr>\
+					<td><span>a</span><div style="position: relative">b</div></td>\
+					<th><span>a</span><div style="position: relative">b</div></th>\
+				</tr>\
+			</tbody>\
+		');
+		
+		orphanDiv = new Element('div', {
+			styles: {
+				position: 'absolute',
+				top: 0,
+				left: 0,
+				width: 50,
+				height: 50,
+				visibility: 'hidden'
+			}
+		});
+		
+	});
+
+	afterEach(function(){
+		[div, relDiv, absDiv, scrollDiv, tallDiv, fixedDiv, fixedDivChild, staticDiv, staticDivChild, table].each(function(el){
+			$(el).destroy();
+		});
 	});
 
 	describe('Element.getSize', function(){
@@ -125,10 +219,40 @@ describe('Element.Dimensions', function(){
 		
 	});
 	
-	afterEach(function(){
-		[div, relDiv, absDiv, scrollDiv, tallDiv].each(function(el){
-			$(el).destroy();
+	// http://www.w3.org/TR/cssom-view/#offset-attributes
+	describe('Element.offsetParent', function(){
+		
+		it('should return null for the root node, the body, fixed positioned nodes and orphan nodes', function(){
+			expect($(document.documentElement).getOffsetParent()).toEqual(null);
+			expect($(document.body).getOffsetParent()).toEqual(null);
+			expect(fixedDiv.getOffsetParent()).toEqual(null);
+			expect(orphanDiv.getOffsetParent()).toEqual(null);
 		});
+		
+		it('should return the body as last option', function(){
+			expect(div.getOffsetParent()).toEqual(document.body);
+			expect(staticDivChild.getOffsetParent()).toEqual(document.body);
+		});
+		
+		it('should return a table if the element is static and child of a table', function(){
+			var tr = table.getElement('tr');
+			expect(tr.getOffsetParent()).toEqual(table);
+		});
+		
+		it('should return a td if the element is static and child of a td or the first non-static element if the element is non-static', function(){
+			var td = table.getElement('td');
+			expect(td.getOffsetParent()).toEqual(table);
+			expect(td.getElement('span').getOffsetParent()).toEqual(td);
+			expect(td.getElement('div').getOffsetParent()).toEqual(document.body);
+		});
+
+		it('should return a th if the element is static and child of a th or the first non-static element if the element is non-static', function(){
+			var th = table.getElement('th');
+			expect(th.getOffsetParent()).toEqual(table);
+			expect(th.getElement('span').getOffsetParent()).toEqual(th);
+			expect(th.getElement('div').getOffsetParent()).toEqual(document.body);
+		});
+
 	});
 
 });
